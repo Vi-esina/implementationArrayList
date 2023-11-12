@@ -16,7 +16,7 @@ public class Main {
         integerMyArrayList.add(113);
         integerMyArrayList.addAll(integerMyArrayList1);
         integerMyArrayList.showToString();
-//integerMyArrayList.remove((Integer)13);
+integerMyArrayList.remove((Integer)13);
         integerMyArrayList.showToString();
 
     }

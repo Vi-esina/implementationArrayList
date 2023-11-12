@@ -103,6 +103,13 @@ public class MyArrayList<T> {
             array[i]=array[i+1];
         }
     }
+    public void remove(Object o) {
+        for (int i = 0; i < length; i++) {
+            if (o.equals(array[i])) {
+                remove(i);
+            }
+        }
+    }
 
     public T sort(Comparator<? super T> c) {
         return null;
