@@ -5,8 +5,8 @@ import java.util.Objects;
 public class MyArrayList<T> {
     private static final int DefaultLength = 1;
     private T[] array;
-    private int length; // количество обьектов в массиве
-    private int maxLengthArray; //размер массива
+    private int length;
+    private int maxLengthArray;
 
     public MyArrayList() {
         array = (T[]) new Object[DefaultLength];
@@ -59,12 +59,11 @@ public class MyArrayList<T> {
         return length == 0;
     }
 
-    private void offsetArray(int i, T element) { //перенос размера
+    private void offsetArray(int i, T element) {
         for (int j = length; j > i; j--) {
             array[j] = array[j - 1];
         }
         array[i] = element;
-
     }
 
     private void expansionArray() { //расширение массива
@@ -77,8 +76,12 @@ public class MyArrayList<T> {
         array = tempArray;
     }
 
+    public int size() {
+        return length;
+    }
+
     private void expansionArray(int size) { //расширение массива
-        int v = (int) ((maxLengthArray + size) + 1);
+        int v = ((maxLengthArray + size) + 1);
         T[] tempArray = (T[]) new Object[v];
         for (int i = 0; i < maxLengthArray; i++) {
             tempArray[i] = array[i];
@@ -91,18 +94,15 @@ public class MyArrayList<T> {
         for (int i = 0; i < length; i++) {
             array[i] = null;
         }
-        length = 0;
         return false;
     }
 
     public void remove(int index) {
         for (int i = index; i < length; i++) {
-//            if (i == index) {
-//                array[i] = null;
-//            }
-            array[i]=array[i+1];
+            array[i] = array[i + 1];
         }
     }
+
     public void remove(Object o) {
         for (int i = 0; i < length; i++) {
             if (o.equals(array[i])) {
@@ -110,12 +110,36 @@ public class MyArrayList<T> {
             }
         }
     }
-
-    public T sort(Comparator<? super T> c) {
-        return null;
-    }
-
     public void showToString() {
         System.out.println(Arrays.toString(Arrays.stream(array).filter(Objects::nonNull).toArray()));
+    }
+    public void sort(Comparator<? super T> c) {
+        mergeSort(0, length - 1, c);
+    }
+    private void mergeSort(int lower, int higher, Comparator<? super T> c) {
+        if (lower < higher) {
+            int middle = lower + (higher - lower) / 2;
+            mergeSort(lower, middle, c);
+            mergeSort(middle + 1, higher, c);
+            merge(lower, middle, higher, c);
+        }
+    }
+    private void merge(int lower, int middle, int higher, Comparator<? super T> c) {
+        T[] temp = Arrays.copyOf(array, length);   // копия  массива
+        int left = lower;
+        int right = middle + 1;
+        int current = lower;
+        while (left <= middle && right <= higher) {
+            if (temp[left] == null) {
+                array[current++] = temp[right++];
+            } else if (temp[right] == null || c.compare(temp[left], temp[right]) <= 0) {
+                array[current++] = temp[left++];
+            } else {
+                array[current++] = temp[right++];
+            }
+        }
+        while (left <= middle) {
+            array[current++] = temp[left++];
+        }
     }
 }
