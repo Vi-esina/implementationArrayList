@@ -11,9 +11,6 @@ import java.util.List;
 @WebServlet("/customer")
 public class CustomerServlet extends HttpServlet {
 
-
-
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Получение списка всех людей из репозитория
